@@ -294,10 +294,11 @@
             const teamNames = [adminData.name, ...members.map(m => m.name)];
             const teamPerformance = teamNames.map(name => {
                 const mTasks = tasks.filter(t => t.assignedTo === name);
+                const mPosts = posts.filter(p => p.author === name).length;
                 const mDone = mTasks.filter(t => t.status === 'done').length;
                 const mPending = mTasks.length - mDone;
                 const mRate = mTasks.length > 0 ? Math.round((mDone / mTasks.length) * 100) : 0;
-                return { name, total: mTasks.length, done: mDone, pending: mPending, rate: mRate };
+                return { name, total: mTasks.length, postsCount: mPosts, done: mDone, pending: mPending, rate: mRate };
             });
 
             if (!currentUser) return (
@@ -567,6 +568,7 @@
                                                 <thead className="border-b bg-slate-50 text-[11px] uppercase text-slate-400 font-black">
                                                     <tr>
                                                         <th className="p-4 font-black text-right font-black">اسم العضو</th>
+                                                        <th className="p-4 font-black text-right font-black">المنشورات</th>
                                                         <th className="p-4 font-black text-right font-black">إجمالي المهام</th>
                                                         <th className="p-4 font-black text-right font-black">المنجزة</th>
                                                         <th className="p-4 font-black text-right font-black">المتبقية</th>
@@ -580,6 +582,7 @@
                                                                 <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-black shrink-0">{tp.name.charAt(0)}</div>
                                                                 <span className="truncate">{tp.name}</span> {tp.name === adminData.name && <span className="text-[9px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-md font-black shrink-0">المدير</span>}
                                                             </td>
+                                                            <td className="p-4 text-indigo-600 font-bold font-black">{tp.postsCount}</td>
                                                             <td className="p-4 text-slate-600 font-bold font-black">{tp.total}</td>
                                                             <td className="p-4 text-emerald-600 font-black font-black">{tp.done}</td>
                                                             <td className="p-4 text-indigo-600 font-black font-black">{tp.pending}</td>
